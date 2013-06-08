@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ProfileView</title>
+	<link rel="stylesheet" href="css-js/notification_iOS.min.css" />
+	<link rel="stylesheet" href="css-js/jquery.mobile.structure-1.1.0.min.css" />
+	<script src="css-js/jquery-1.7.1.min.js"></script>
+	<script src="css-js/jquery.mobile-1.1.0.min.js"></script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">	
+   
+	<script> 		
+		
+	function getExerciseList(jsonText)
+	{		
+		exerciseList = $.parseJSON(jsonText); 
+		
+		populateSelectScreen(exerciseList);
+		populateCreateScreen(exerciseList);
+		populateEditScreen(exerciseList);
+		populateDeleteScreen(exerciseList);
+	}
+
+	function populateSelectScreen(exerciseList)
+	{
+		if (exerciseList.length == 0)
+			$('#noItemsArea').show();
+		else
+			$('#noItemsArea').hide();
+	
+		$.each(exerciseList, function (index, exercise) {
+			$('#selectExercisesArea').html( 
+				$('#selectExercisesArea').html() + 
+				'<li>' + 
+				'<a href="javascript:selectExercise(' + exercise.id + ');">' 
+				+ exercise.name + '</a></li>'
+			);
+		});
+		$("#selectExercisesArea").listview("refresh"); //dynamically apply jquery mobile styles
+	}
+
+	function populateCreateScreen(sectionList)
+	{
+
+	}
+
+	function populateEditScreen(exerciseList)
+	{
+		$.each(exerciseList, function (index, exercise) {
+			$('#editExercisesArea').html( 
+				$('#editExercisesArea').html() + 
+				'<li data-icon="grid">' +
+				'<a href="javascript:editExercise(' + exercise.id + ');">' +
+				exercise.name + '</a></li>'
+			);
+		});
+		$("#editExercisesArea").listview("refresh"); //dynamically apply jquery mobile styles
+	}
+
+	function populateDeleteScreen(exerciseList)
+	{
+		$.each(exerciseList, function (index, exercise) {
+			$('#deleteExercisesArea').html( 
+				$('#deleteExercisesArea').html() + 
+				'<li data-icon="delete">' +
+				'<a href="javascript:deleteExercise(' + exercise.id + ');">' +
+				exercise.name + '</a></li>'
+			);
+			//the tutorial had 'return false;' at the end of the javascript href thing.  It caused the link not to work for me, however.
+		});
+		$("#deleteExercisesArea").listview("refresh"); //dynamically apply jquery mobile styles
+	}
+
+	function selectExercise(exerciseId)
+	{
+		SectionActivity.loadExercisePage(exerciseId);
+	}
+
+	function deleteExercise(exerciseId)
+	{
+		//ask for confirmation
+		var answer = confirm('Deleting this item will delete all data contained within. Are you sure you want to delete this?');
+		if (answer)
+			SectionActivity.deleteExercise(exerciseId);
+	}
+
+	function editExercise(exerciseId)
+	{
+		SectionActivity.editExercise(exerciseId);
+	}
+	
+	function selectButtonClick()
+	{
+		$("#editScreen").hide();
+		$("#deleteScreen").hide();
+		$("#createScreen").hide();
+		$("#selectScreen").show();
+	}
+	
+	function createButtonClick()
+	{
+		$("#editScreen").hide();
+		$("#deleteScreen").hide();
+		$("#selectScreen").hide();
+		$("#createScreen").show();
+	}
+	
+	function editButtonClick()
+	{
+		$("#createScreen").hide();
+		$("#deleteScreen").hide();
+		$("#selectScreen").hide();
+		$("#editScreen").show();
+	}
+	
+	function deleteButtonClick()
+	{
+		$("#createScreen").hide();
+		$("#editScreen").hide();
+		$("#selectScreen").hide();
+		$("#deleteScreen").show();
+	}
+	
+	function resetScreen()
+	{
+		$("#deleteScreen").hide();
+		$("#editScreen").hide();
+		$("#createScreen").hide();
+		$("#selectScreen").show();
+
+		eraseScreens();
+		SectionActivity.getExercises('getExerciseList'); //getExerciseList = callback
+		SectionActivity.resetScreen();
+	}
+	
+	function eraseScreens()
+	{
+		$('#selectExercisesArea').html('<li data-role="list-divider">Select an exercise:</li>');
+		$('#editExercisesArea').html('<li data-role="list-divider">Choose an exercise to edit:</li>');
+		$('#deleteExercisesArea').html('<li data-role="list-divider">Choose an exercise to delete:</li>');
+		$('#createExerciseName').val('');
+	}
+	
+	$(document).ready(function () {	
+		
+		$("#deleteScreen").hide();
+		$("#editScreen").hide();
+		$("#createScreen").hide();
+
+		SectionActivity.getExercises('getExerciseList'); //getExerciseList = callback
+
+		$("#createConfirmButton").click(function() {
+			var name = $("#createExerciseName").val();
+			if (name == "")
+			{
+				alert("The input must not be empty!");
+			}
+			else
+			{
+  				SectionActivity.createExercise(name);
+  			}
+		});
+		
+		$("#selectExercise").click(function() {
+			$("#editScreen").hide();
+			$("#deleteScreen").hide();
+			$("#createScreen").hide();
+			$("#selectScreen").show();
+		});
+		
+		$("#createExercise").click(function() {
+			$("#editScreen").hide();
+			$("#deleteScreen").hide();
+			$("#selectScreen").hide();
+			$("#createScreen").show();
+  			SectionActivity.createExercise();
+		});
+
+		$("#deleteExercise").click(function() {
+			$("#createScreen").hide();
+			$("#editScreen").hide();
+			$("#selectScreen").hide();
+			$("#deleteScreen").show();
+  			//SectionActivity.deleteExercise();
+		});
+
+		$("#editExercise").click(function() {
+			$("#createScreen").hide();
+			$("#deleteScreen").hide();
+			$("#selectScreen").hide();
+			$("#editScreen").show();
+  			//SectionActivity.editExercise();
+		});
+		
+		
+		//getRoutineList('[{"description":null,"id":1,"items":[],"name":"Jeremy"},{"description":null,"id":2,"items":[],"name":"Jeremy"},{"description":null,"id":3,"items":[],"name":"Jeremy"},{"description":null,"id":4,"items":[],"name":"Jeremy"}]');
+	});
+		
+	</script>
+</head>	 
+
+<body>
+	<div data-role="page">
+		<!--<div data-role="header" data-theme="a" >
+			<h1>Routine View</h1>
+		</div>-->
+		<div data-role="content">
+
+			<div id="selectScreen">			
+
+				<ul data-role="listview" data-inset="true" id="selectExercisesArea">
+					<li data-role="list-divider">Select an exercise:</li>
+				</ul>
+				<p id="noItemsArea" style="display:none;">No exercises were found.</p>		
+			</div>
+
+			<div id="createScreen">			
+
+				<ul data-role="listview" data-inset="true" id="createExercisesArea">
+					<li data-role="list-divider">Create an Exercise:</li>
+				</ul>
+				<div>
+					<label for="basic">Input the exercise name:</label>
+					<input type="text" name="name" id="createExerciseName" value="" data-mini="true"/>
+				</div>
+
+				<a href="#" data-role="button" id="createConfirmButton" data-theme="a">Create</a>
+					
+			</div>
+			
+			<div id="deleteScreen">
+
+				<ul data-role="listview" data-inset="true" id="deleteExercisesArea">
+					<li data-role="list-divider">Choose an exercise to delete:</li>
+				</ul>
+
+			</div>
+
+			<div id="editScreen">
+
+				<ul data-role="listview" data-inset="true" id="editExercisesArea">
+					<li data-role="list-divider">Choose an exercise to edit:</li>
+				</ul>
+
+			</div>
+		</div>
+<!--		<div data-role="footer" >
+		<p style="text-align: center">
+		<table style="width: 100%">
+			<tr>
+				<td><a href="#" data-role="button" id="selectProfile" data-theme="b"  style="width: 100%">Select</a></td>
+				<td><a href="#" data-role="button" id="createProfile" data-theme="b"  style="width: 100%">Create</a></td>
+				<td><a href="#" data-role="button" id="editProfile" data-theme="b"  style="width: 100%">Edit</a></td>
+				<td><a href="#" data-role="button" id="deleteProfile" data-theme="b"  style="width: 100%">Delete</a></td>
+			</tr>
+		</table>
+		</p>
+		</div> -->
+	</div> 
+</body>
+</html>

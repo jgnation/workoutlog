@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ProfileView</title>
+	<link rel="stylesheet" href="css-js/notification_iOS.min.css" />
+	<link rel="stylesheet" href="css-js/jquery.mobile.structure-1.1.0.min.css" />
+	<script src="css-js/jquery-1.7.1.min.js"></script>
+	<script src="css-js/jquery.mobile-1.1.0.min.js"></script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">	
+   
+     <style>
+		BODY, HTML {background: transparent;}
+	</style>
+	<script> 		
+		
+	function getRoutineList(jsonText)
+	{		
+		routinesList = $.parseJSON(jsonText); 
+		
+		populateSelectScreen(routinesList);
+		populateCreateScreen(routinesList);
+		populateEditScreen(routinesList);
+		populateDeleteScreen(routinesList);
+	}
+
+	function populateSelectScreen(routinesList)
+	{
+		if (routinesList.length == 0)
+			$('#noItemsArea').show();
+		else
+			$('#noItemsArea').hide();
+	
+		$.each(routinesList, function (index, routine) {
+			$('#selectRoutinesArea').html( 
+				$('#selectRoutinesArea').html() + 
+				'<li>' + 
+				'<a href="javascript:selectRoutine(' + routine.id + ');">' 
+				+ routine.name + '</a></li>'
+			);
+			//the tutorial had 'return false;' at the end of the javascript href thing.  It caused the link not to work for me, however.
+		});
+		$("#selectRoutinesArea").listview("refresh"); //dynamically apply jquery mobile styles
+	}
+
+	function populateCreateScreen(routinesList)
+	{
+
+	}
+
+	function populateEditScreen(routinesList)
+	{
+		$.each(routinesList, function (index, routine) {
+			$('#editRoutinesArea').html( 
+				$('#editRoutinesArea').html() + 
+				'<li data-icon="grid">' +
+				'<a href="javascript:editRoutine(' + routine.id + ');">' +
+				routine.name + '</a></li>'
+			);
+		});
+		$("#editRoutinesArea").listview("refresh"); //dynamically apply jquery mobile styles
+	}
+
+	function populateDeleteScreen(routinesList)
+	{
+		$.each(routinesList, function (index, routine) {
+			$('#deleteRoutinesArea').html( 
+				$('#deleteRoutinesArea').html() + 
+				'<li data-icon="delete">' +
+				'<a href="javascript:deleteRoutine(' + routine.id + ');">' +
+				routine.name + '</a></li>'
+			);
+			//the tutorial had 'return false;' at the end of the javascript href thing.  It caused the link not to work for me, however.
+		});
+		$("#deleteRoutinesArea").listview("refresh"); //dynamically apply jquery mobile styles
+	}
+
+	function selectRoutine(routineId)
+	{
+		ProfileActivity.loadRoutinePage(routineId);
+	}
+
+	function deleteRoutine(routineId)
+	{
+		//ask for confirmation
+		var answer = confirm('Deleting this item will delete all data contained within. Are you sure you want to delete this?');
+		if (answer)
+			ProfileActivity.deleteRoutine(routineId);
+	}
+
+	function editRoutine(routineId)
+	{
+		ProfileActivity.editRoutine(routineId);
+	}
+	
+	function selectButtonClick()
+	{
+		$("#editScreen").hide();
+		$("#deleteScreen").hide();
+		$("#createScreen").hide();
+		$("#selectScreen").show();
+	}
+	
+	function createButtonClick()
+	{
+		$("#editScreen").hide();
+		$("#deleteScreen").hide();
+		$("#selectScreen").hide();
+		$("#createScreen").show();
+	}
+	
+	function editButtonClick()
+	{
+		$("#createScreen").hide();
+		$("#deleteScreen").hide();
+		$("#selectScreen").hide();
+		$("#editScreen").show();
+	}
+	
+	function deleteButtonClick()
+	{
+		$("#createScreen").hide();
+		$("#editScreen").hide();
+		$("#selectScreen").hide();
+		$("#deleteScreen").show();
+	}
+	
+	function resetScreen()
+	{
+		$("#deleteScreen").hide();
+		$("#editScreen").hide();
+		$("#createScreen").hide();
+		$("#selectScreen").show();
+
+		eraseScreens();
+		ProfileActivity.getRoutines('getRoutineList'); //getRoutineList = callback
+		ProfileActivity.resetScreen();
+	}
+	
+	function eraseScreens()
+	{
+		$('#selectRoutinesArea').html('<li data-role="list-divider">Select a routine:</li>');
+		$('#editRoutinesArea').html('<li data-role="list-divider">Choose a routine to edit:</li>');
+		$('#deleteRoutinesArea').html('<li data-role="list-divider">Choose a routine to delete:</li>');
+		$('#createRoutineName').val('');
+	}
+	
+	$(document).ready(function () {	
+		
+		$("#deleteScreen").hide();
+		$("#editScreen").hide();
+		$("#createScreen").hide();
+
+		ProfileActivity.getRoutines('getRoutineList'); //getRoutineList = callback
+
+		$("#createConfirmButton").click(function() {
+			var name = $("#createRoutineName").val();
+			if (name == "")
+			{
+				alert("The input must not be empty!");
+			}
+			else
+			{
+  				ProfileActivity.createRoutine(name);
+  			}
+		});
+		
+		$("#selectRoutine").click(function() {
+			$("#editScreen").hide();
+			$("#deleteScreen").hide();
+			$("#createScreen").hide();
+			$("#selectScreen").show();
+		});
+		
+		$("#createRoutine").click(function() {
+			$("#editScreen").hide();
+			$("#deleteScreen").hide();
+			$("#selectScreen").hide();
+			$("#createScreen").show();
+  			ProfileActivity.createRoutine();
+		});
+
+		$("#deleteRoutine").click(function() {
+			$("#createScreen").hide();
+			$("#editScreen").hide();
+			$("#selectScreen").hide();
+			$("#deleteScreen").show();
+  			//ProfileActivity.deleteRoutine();
+		});
+
+		$("#editRoutine").click(function() {
+			$("#createScreen").hide();
+			$("#deleteScreen").hide();
+			$("#selectScreen").hide();
+			$("#editScreen").show();
+  			//ProfileActivity.editRoutine();
+		});
+		
+		
+		//getRoutineList('[{"description":null,"id":1,"items":[],"name":"Jeremy"},{"description":null,"id":2,"items":[],"name":"Jeremy"},{"description":null,"id":3,"items":[],"name":"Jeremy"},{"description":null,"id":4,"items":[],"name":"Jeremy"}]');
+	});
+		
+	</script>
+</head>	 
+
+<body>
+	<div data-role="page">
+		<!--<div data-role="header" data-theme="a" >
+			<h1>Profile View</h1>
+		</div>-->
+		<div data-role="content">
+
+			<div id="selectScreen">			
+
+				<ul data-role="listview" data-inset="true" id="selectRoutinesArea">
+					<li data-role="list-divider">Select a routine:</li>
+				</ul>
+				<p id="noItemsArea" style="display:none;">No routines were found.</p>	
+			</div>
+
+			<div id="createScreen">			
+
+				<ul data-role="listview" data-inset="true" id="createRoutinesArea">
+					<li data-role="list-divider">Create a Routine:</li>
+				</ul>
+				<div>
+					<label for="basic">Input the routine name:</label>
+					<input type="text" name="name" id="createRoutineName" value="" data-mini="true"/>
+				</div>
+
+				<a href="#" data-role="button" id="createConfirmButton" data-theme="a">Create</a>
+					
+			</div>
+			
+			<div id="deleteScreen">
+
+				<ul data-role="listview" data-inset="true" id="deleteRoutinesArea">
+					<li data-role="list-divider">Choose a routine to delete:</li>
+				</ul>
+
+			</div>
+
+			<div id="editScreen">
+
+				<ul data-role="listview" data-inset="true" id="editRoutinesArea">
+					<li data-role="list-divider">Choose a routine to edit:</li>
+				</ul>
+
+			</div>
+		</div>
+<!--		<div data-role="footer" >
+		<p style="text-align: center">
+		<table style="width: 100%">
+			<tr>
+				<td><a href="#" data-role="button" id="selectProfile" data-theme="b"  style="width: 100%">Select</a></td>
+				<td><a href="#" data-role="button" id="createProfile" data-theme="b"  style="width: 100%">Create</a></td>
+				<td><a href="#" data-role="button" id="editProfile" data-theme="b"  style="width: 100%">Edit</a></td>
+				<td><a href="#" data-role="button" id="deleteProfile" data-theme="b"  style="width: 100%">Delete</a></td>
+			</tr>
+		</table>
+		</p>
+		</div> -->
+	</div> 
+</body>
+</html>

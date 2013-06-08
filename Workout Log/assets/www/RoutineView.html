@@ -1,0 +1,263 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>ProfileView</title>
+	<link rel="stylesheet" href="css-js/notification_iOS.min.css" />
+	<link rel="stylesheet" href="css-js/jquery.mobile.structure-1.1.0.min.css" />
+	<script src="css-js/jquery-1.7.1.min.js"></script>
+	<script src="css-js/jquery.mobile-1.1.0.min.js"></script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">	
+   
+	<script> 		
+		
+	function getSectionList(jsonText)
+	{		
+		var sectionList = $.parseJSON(jsonText); 
+		
+		populateSelectScreen(sectionList);
+		populateCreateScreen(sectionList);
+		populateEditScreen(sectionList);
+		populateDeleteScreen(sectionList);
+	}
+
+	function populateSelectScreen(sectionList)
+	{
+		if (sectionList.length == 0)
+			$('#noItemsArea').show();
+		else
+			$('#noItemsArea').hide();
+			
+		$.each(sectionList, function (index, section) {
+			$('#selectSectionsArea').html( 
+				$('#selectSectionsArea').html() + 
+				'<li>' + 
+				'<a href="javascript:selectSection(' + section.id + ');">' 
+				+ section.name + '</a></li>'
+			);
+			//the tutorial had 'return false;' at the end of the javascript href thing.  It caused the link not to work for me, however.
+		});
+		$("#selectSectionsArea").listview("refresh"); //dynamically apply jquery mobile styles
+	}
+
+	function populateCreateScreen(sectionList)
+	{
+
+	}
+
+	function populateEditScreen(sectionList)
+	{
+		$.each(sectionList, function (index, section) {
+			$('#editSectionsArea').html( 
+				$('#editSectionsArea').html() + 
+				'<li data-icon="grid">' +
+				'<a href="javascript:editSection(' + section.id + ');">' +
+				section.name + '</a></li>'
+			);
+		});
+		$("#editSectionsArea").listview("refresh"); //dynamically apply jquery mobile styles
+	}
+
+	function populateDeleteScreen(sectionList)
+	{
+		$.each(sectionList, function (index, section) {
+			$('#deleteSectionsArea').html( 
+				$('#deleteSectionsArea').html() + 
+				'<li data-icon="delete">' +
+				'<a href="javascript:deleteSection(' + section.id + ');">' +
+				section.name + '</a></li>'
+			);
+			//the tutorial had 'return false;' at the end of the javascript href thing.  It caused the link not to work for me, however.
+		});
+		$("#deleteSectionsArea").listview("refresh"); //dynamically apply jquery mobile styles
+	}
+
+	function selectSection(sectionId)
+	{
+		RoutineActivity.loadSectionPage(sectionId);
+	}
+
+	function deleteSection(sectionId)
+	{
+		//ask for confirmation
+		var answer = confirm('Deleting this item will delete all data contained within. Are you sure you want to delete this?');
+		if (answer)
+			RoutineActivity.deleteSection(sectionId);
+	}
+
+	function editSection(sectionId)
+	{
+		RoutineActivity.editSection(sectionId);
+	}
+	
+	function selectButtonClick()
+	{
+		$("#editScreen").hide();
+		$("#deleteScreen").hide();
+		$("#createScreen").hide();
+		$("#selectScreen").show();
+	}
+	
+	function createButtonClick()
+	{
+		$("#editScreen").hide();
+		$("#deleteScreen").hide();
+		$("#selectScreen").hide();
+		$("#createScreen").show();
+	}
+	
+	function editButtonClick()
+	{
+		$("#createScreen").hide();
+		$("#deleteScreen").hide();
+		$("#selectScreen").hide();
+		$("#editScreen").show();
+	}
+	
+	function deleteButtonClick()
+	{
+		$("#createScreen").hide();
+		$("#editScreen").hide();
+		$("#selectScreen").hide();
+		$("#deleteScreen").show();
+	}
+	
+	function resetScreen()
+	{
+		$("#deleteScreen").hide();
+		$("#editScreen").hide();
+		$("#createScreen").hide();
+		$("#selectScreen").show();
+
+		eraseScreens();
+		RoutineActivity.getSections('getSectionList'); //getSectionList = callback
+		RoutineActivity.resetScreen();
+	}
+	
+	function eraseScreens()
+	{
+		$('#selectSectionsArea').html('<li data-role="list-divider">Select a section:</li>');
+		$('#editSectionsArea').html('<li data-role="list-divider">Choose a section to edit:</li>');
+		$('#deleteSectionsArea').html('<li data-role="list-divider">Choose a section to delete:</li>');
+		$('#createSectionName').val('');
+	}
+	
+	$(document).ready(function () {	
+		
+		$("#deleteScreen").hide();
+		$("#editScreen").hide();
+		$("#createScreen").hide();
+
+		RoutineActivity.getSections('getSectionList'); //getSectionList = callback
+
+		$("#createConfirmButton").click(function() {
+			var name = $("#createSectionName").val();
+			if (name == "")
+			{
+				alert("The input must not be empty!");
+			}
+			else
+			{
+  				RoutineActivity.createSection(name);
+  			}
+		});
+		
+		$("#selectSection").click(function() {
+			$("#editScreen").hide();
+			$("#deleteScreen").hide();
+			$("#createScreen").hide();
+			$("#selectScreen").show();
+		});
+		
+		$("#createSection").click(function() {
+			$("#editScreen").hide();
+			$("#deleteScreen").hide();
+			$("#selectScreen").hide();
+			$("#createScreen").show();
+  			RoutineActivity.createSection();
+		});
+
+		$("#deleteSection").click(function() {
+			$("#createScreen").hide();
+			$("#editScreen").hide();
+			$("#selectScreen").hide();
+			$("#deleteScreen").show();
+  			//RoutineActivity.deleteSection();
+		});
+
+		$("#editSection").click(function() {
+			$("#createScreen").hide();
+			$("#deleteScreen").hide();
+			$("#selectScreen").hide();
+			$("#editScreen").show();
+  			//RoutineActivity.editSection();
+		});
+		
+		
+		//getRoutineList('[{"description":null,"id":1,"items":[],"name":"Jeremy"},{"description":null,"id":2,"items":[],"name":"Jeremy"},{"description":null,"id":3,"items":[],"name":"Jeremy"},{"description":null,"id":4,"items":[],"name":"Jeremy"}]');
+	});
+		
+	</script>
+</head>	 
+
+<body>
+	<div data-role="page">
+		<!--<div data-role="header" data-theme="a" >
+			<h1>Routine View</h1>
+		</div>-->
+		<div data-role="content">
+
+			<div id="selectScreen">			
+
+				<ul data-role="listview" data-inset="true" id="selectSectionsArea">
+					<li data-role="list-divider">Select a section:</li>
+				</ul>
+				<p id="noItemsArea" style="display:none;">No sections were found.</p>		
+			</div>
+
+			<div id="createScreen">			
+
+				<ul data-role="listview" data-inset="true" id="createSectionsArea">
+					<li data-role="list-divider">Create a Section:</li>
+				</ul>
+				<div>
+					<label for="basic">Input the section name:</label>
+					<input type="text" name="name" id="createSectionName" value="" data-mini="true"/>
+				</div>
+
+				<a href="#" data-role="button" id="createConfirmButton" data-theme="a">Create</a>
+					
+			</div>
+			
+			<div id="deleteScreen">
+
+				<ul data-role="listview" data-inset="true" id="deleteSectionsArea">
+					<li data-role="list-divider">Choose a section to delete:</li>
+				</ul>
+
+			</div>
+
+			<div id="editScreen">
+
+				<ul data-role="listview" data-inset="true" id="editSectionsArea">
+					<li data-role="list-divider">Choose a section to edit:</li>
+				</ul>
+
+			</div>
+		</div>
+<!--		<div data-role="footer" >
+		<p style="text-align: center">
+		<table style="width: 100%">
+			<tr>
+				<td><a href="#" data-role="button" id="selectProfile" data-theme="b"  style="width: 100%">Select</a></td>
+				<td><a href="#" data-role="button" id="createProfile" data-theme="b"  style="width: 100%">Create</a></td>
+				<td><a href="#" data-role="button" id="editProfile" data-theme="b"  style="width: 100%">Edit</a></td>
+				<td><a href="#" data-role="button" id="deleteProfile" data-theme="b"  style="width: 100%">Delete</a></td>
+			</tr>
+		</table>
+		</p>
+		</div> -->
+	</div> 
+</body>
+</html>

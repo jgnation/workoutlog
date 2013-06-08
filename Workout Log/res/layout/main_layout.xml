@@ -1,0 +1,114 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:theme="@android:style/Theme.Translucent"
+    >
+
+
+    <!-- HEADER -->
+
+
+    <LinearLayout
+        android:id="@+id/top_header" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#333333"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:gravity="center_horizontal" >
+        <WebView android:orientation="vertical"
+	        android:layout_width="fill_parent" 
+	        android:layout_height="50dip"
+	        android:layout_weight="5"
+	        android:id="@+id/bannerView" 
+	        android:background="@android:color/transparent">
+    	</WebView>
+        <TextView 
+		    android:text="Workout Log"
+		    android:textStyle="bold"
+		    android:textSize="20sp"
+		    android:id="@+id/header_title" 
+		    android:layout_height="wrap_content"
+		    android:layout_width="wrap_content"
+		    />
+        <TextView 
+		    android:text=""
+		    android:textSize="12sp"
+		    android:id="@+id/header_text" 
+		    android:layout_height="wrap_content"
+		    android:layout_width="wrap_content"
+		    />
+    </LinearLayout>
+
+	<!-- FOOTER -->
+    <LinearLayout android:id="@+id/bottom_menu"
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"       
+        android:orientation="horizontal" 
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/black">
+        <!-- menu bar -->
+        <Button 
+	        android:id="@+id/selectButton" 
+	        android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content" 
+	        android:layout_weight="1"
+	        android:textSize="18sp"
+	        android:paddingTop="12dp"
+	        android:paddingBottom="12dp"
+	        android:background="@drawable/tab_button_shape"
+	        android:textColor="@color/TabTextColor" 
+	        android:text="Select">
+	    </Button>
+        <Button 
+	        android:id="@+id/createButton" 
+	        android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content" 
+	        android:layout_weight="1"
+	        android:textSize="18sp"
+	        android:paddingTop="12dp"
+	        android:paddingBottom="12dp"
+	        android:background="@drawable/tab_button_shape" 
+	        android:textColor="@color/TabTextColor"
+	        android:text="Create">
+	    </Button>
+	  <!--   <Button 
+	        android:id="@+id/editButton" 
+	        android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:textSize="18sp"
+	        android:paddingTop="12dp"
+	        android:paddingBottom="12dp"
+	        android:background="@drawable/tab_button_shape" 
+	        android:textColor="@color/TabTextColor"
+	        android:text="Edit">
+	    </Button>-->
+	    <Button 
+	        android:id="@+id/deleteButton" 
+	        android:layout_width="wrap_content" 
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:textSize="18sp"
+	        android:paddingTop="12dp"
+	        android:paddingBottom="12dp"
+	        android:background="@drawable/tab_button_shape" 
+	        android:textColor="@color/TabTextColor"
+	        android:text="Delete">
+	    </Button>  
+    </LinearLayout>
+    
+    <!-- CONTENT AREA -->
+    <WebView android:orientation="vertical"
+        android:layout_width="fill_parent" 
+        android:layout_height="fill_parent"
+        android:layout_weight="5"
+        android:layout_below="@id/top_header" 
+        android:layout_above="@id/bottom_menu"
+        android:id="@+id/mainView"
+        android:paddingBottom="5sp" 
+        android:background="@android:color/transparent">
+    </WebView>
+
+</RelativeLayout>

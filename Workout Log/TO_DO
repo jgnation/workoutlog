@@ -1,0 +1,46 @@
+ Accessing data folder:
+     Connect your device. Make sure that device has ROOT access.
+    Open command prompt (For windows).
+    Set path for android platform tools ie set path=”C:\Program Files\Android\android-sdk\platform-tools” and type enter.
+    Type adb devices and make sure that the phone is listed after executing the command.
+    Type adb shell.
+    Type su.
+    Type chmod  777  /data  /data/data  /data/data/<packagename>/*
+    For example chmod  777  /data  /data/data  /data/data/com.sample.app/*
+    Now goto DDMS and check whether the data folder is accessible.
+
+
+-when deleting history items, if the most recent history item is deleted, going back to the 'create'
+screen still shows it.  So, if deleting the most recent item, reload the whole page
+
+-sanitize inputs!
+-clean up history screen
+-polish the 'about' section
+-GET RID OF LEADBOLT
+-Fix the freezing on startup issue!
+-make background a solid color?  This seems especially necessary for the history screen.
+I think it would look good elsewhere as well
+-After saving item, the progress bar disappears too quickly and sometimes there is a delay when the
+page refreshes
+
+low priority:
+-maybe add progress bar to creation of items
+-sometimes, when loading slowly, the 'no _____ were found' is visible before the page loads (this may be fixed due to display:none;)
+-make tabs on bottom smaller
+-put 'use create tab' on first load (done, but the message sometimes appears before css renders)
+-fix icon (done - do I need an icon for xhdpi?)
+-add weight/reps column header to last screen
+-test other android versions (I have tested my phone and emulator on 2.2 API 8)
+-update marketing
+-cleanup code!
+-optimize app!
+
+-http://stackoverflow.com/questions/11759610/upload-android-app-to-google-play-step-by-step
+
+http://www.youtube.com/watch?v=FMWt2gySaCI <-airpush tutorial
+
+ <script type="text/javascript" src="http://ad.leadboltads.net/show_app_ad.js?section_id=998444631"></script>
+ 
+ 
+
+ 

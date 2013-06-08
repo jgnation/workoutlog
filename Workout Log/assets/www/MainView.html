@@ -1,0 +1,281 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	title>MainView</title>
+	<link rel="stylesheet" href="css-js/notification_iOS.min.css" />
+	<link rel="stylesheet" href="css-js/jquery.mobile.structure-1.1.0.min.css" />
+	<script src="css-js/jquery-1.7.1.min.js"></script>
+	<script src="css-js/jquery.mobile-1.1.0.min.js"></script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">	
+   
+    <style>
+		BODY, HTML {background: transparent;}
+	</style>
+		
+	
+	<script> 		
+		
+	function getProfileList(jsonText)
+	{		
+		profilesList = $.parseJSON(jsonText); 
+		
+		populateSelectScreen(profilesList);
+		populateCreateScreen(profilesList);
+		populateEditScreen(profilesList);
+		populateDeleteScreen(profilesList);
+	}
+
+	function populateSelectScreen(profilesList)
+	{
+		if (profilesList.length == 0)
+			$('#noItemsArea').show();
+		else
+			$('#noItemsArea').hide();
+		
+		$.each(profilesList, function (index, profile) {
+			$('#selectProfilesArea').html( 
+				$('#selectProfilesArea').html() + 
+				'<li>' + 
+				'<a href="javascript:selectProfile(' + profile.id + ');">' 
+				+ profile.name + '</a></li>'
+			);
+			//the tutorial had 'return false;' at the end of the javascript href thing.  It caused the link not to work for me, however.
+		});
+		$("#selectProfilesArea").listview("refresh"); //dynamically apply jquery mobile styles
+	}
+
+	function populateCreateScreen(profilesList)
+	{
+
+	}
+
+	function populateEditScreen(profilesList)
+	{
+		$.each(profilesList, function (index, profile) {
+			$('#editProfilesArea').html( 
+				$('#editProfilesArea').html() + 
+				'<li data-icon="grid">' +
+				'<a href="javascript:editProfile(' + profile.id + ');">' +
+				profile.name + '</a></li>'
+			);
+		});
+		$("#editProfilesArea").listview("refresh"); //dynamically apply jquery mobile styles
+	}
+
+	function populateDeleteScreen(profilesList)
+	{
+		$.each(profilesList, function (index, profile) {
+			$('#deleteProfilesArea').html( 
+				$('#deleteProfilesArea').html() + 
+				'<li data-icon="delete">' +
+				'<a href="javascript:deleteProfile(' + profile.id + ');">' +
+				profile.name + '</a></li>'
+			);
+			//the tutorial had 'return false;' at the end of the javascript href thing.  It caused the link not to work for me, however.
+		});
+		$("#deleteProfilesArea").listview("refresh"); //dynamically apply jquery mobile styles
+	}
+
+	function selectProfile(profileId)
+	{
+		MainActivity.loadProfilePage(profileId);
+	}
+
+	function deleteProfile(profileId)
+	{
+		//ask for confirmation
+		var answer = confirm('Deleting this item will delete all data contained within. Are you sure you want to delete this?');
+		if (answer)
+			MainActivity.deleteProfile(profileId);
+	}
+
+	function editProfile(profileId)
+	{
+		MainActivity.editProfile(profileId);
+	}
+	
+	function selectButtonClick()
+	{
+		$("#editScreen").hide();
+		$("#deleteScreen").hide();
+		$("#createScreen").hide();
+		$("#selectScreen").show();
+	}
+	
+	function createButtonClick()
+	{
+		$("#editScreen").hide();
+		$("#deleteScreen").hide();
+		$("#selectScreen").hide();
+		$("#createScreen").show();
+	}
+	
+	function editButtonClick()
+	{
+		$("#createScreen").hide();
+		$("#deleteScreen").hide();
+		$("#selectScreen").hide();
+		$("#editScreen").show();
+	}
+	
+	function deleteButtonClick()
+	{
+		$("#createScreen").hide();
+		$("#editScreen").hide();
+		$("#selectScreen").hide();
+		$("#deleteScreen").show();
+	}
+	
+	function resetScreen()
+	{
+		$("#deleteScreen").hide();
+		$("#editScreen").hide();
+		$("#createScreen").hide();
+		$("#selectScreen").show();
+
+		eraseScreens();
+		MainActivity.getProfiles('getProfileList'); //getProfileList = callback
+		MainActivity.resetScreen();
+	}
+	
+	function eraseScreens()
+	{
+		$('#selectProfilesArea').html('<li data-role="list-divider">Select a profile:</li>');
+		$('#editProfilesArea').html('<li data-role="list-divider">Choose a profile to edit:</li>');
+		$('#deleteProfilesArea').html('<li data-role="list-divider">Choose a profile to delete:</li>');
+		$('#createProfileName').val('');
+	}
+	
+	function displayCreateProfileAlert()
+	{
+		alert("Use the '\Create\' tab to create a profile.");
+	}
+	
+	$(document).ready(function () {	
+		
+		$("#deleteScreen").hide();
+		$("#editScreen").hide();
+		$("#createScreen").hide();
+
+		MainActivity.getProfiles('getProfileList'); //getProfileList = callback
+
+		$("#createConfirmButton").click(function() {
+			var name = $("#createProfileName").val();
+			if (name == "")
+			{
+				alert("The input must not be empty!");
+			}
+			else
+			{
+  				MainActivity.createProfile(name);
+  			}
+		});
+		
+		$("#selectProfile").click(function() {
+			$("#editScreen").hide();
+			$("#deleteScreen").hide();
+			$("#createScreen").hide();
+			$("#selectScreen").show();
+		});
+		
+		$("#createProfile").click(function() {
+			$("#editScreen").hide();
+			$("#deleteScreen").hide();
+			$("#selectScreen").hide();
+			$("#createScreen").show();
+  			MainActivity.createProfile();
+		});
+
+		$("#deleteProfile").click(function() {
+			$("#createScreen").hide();
+			$("#editScreen").hide();
+			$("#selectScreen").hide();
+			$("#deleteScreen").show();
+  			//MainActivity.deleteProfile();
+		});
+
+		$("#editProfile").click(function() {
+			$("#createScreen").hide();
+			$("#deleteScreen").hide();
+			$("#selectScreen").hide();
+			$("#editScreen").show();
+  			//MainActivity.editProfile();
+		});
+		
+		$("#aboutButton").click(function() {
+  			MainActivity.loadAboutPage();
+		});
+		
+		
+		//getProfileList('[{"description":null,"id":1,"items":[],"name":"Jeremy"},{"description":null,"id":2,"items":[],"name":"Jeremy"},{"description":null,"id":3,"items":[],"name":"Jeremy"},{"description":null,"id":4,"items":[],"name":"Jeremy"}]');
+	});
+		
+	</script>
+</head>	 
+
+<body>
+	<div data-role="page">
+		<!--<div data-role="header" data-theme="a" >
+			<h1>Main View</h1>
+		</div>-->
+		<div data-role="content">
+
+			<div id="selectScreen">			
+
+				<ul data-role="listview" data-inset="true" id="selectProfilesArea">
+					<li data-role="list-divider">Select a profile:</li>
+				</ul>
+				<p id="noItemsArea" style="display:none;">No profiles were found.</p>	
+				<p>
+				<br/><br/><br/>
+				<a href="#" data-role="button" id="aboutButton" data-theme="a">About Workout Log</a>
+				</p>
+			</div>
+
+			<div id="createScreen">			
+
+				<ul data-role="listview" data-inset="true" id="createProfilesArea">
+					<li data-role="list-divider">Create a Profile:</li>
+				</ul>
+				<div>
+					<label for="basic">Input your name:</label>
+					<input type="text" name="name" id="createProfileName" value="" data-mini="true"/>
+				</div>
+
+				<a href="#" data-role="button" id="createConfirmButton" data-theme="a">Create</a>
+					
+			</div>
+			
+			<div id="deleteScreen">
+
+				<ul data-role="listview" data-inset="true" id="deleteProfilesArea">
+					<li data-role="list-divider">Choose a profile to delete:</li>
+				</ul>
+
+			</div>
+
+			<div id="editScreen">
+
+				<ul data-role="listview" data-inset="true" id="editProfilesArea">
+					<li data-role="list-divider">Choose a profile to edit:</li>
+				</ul>
+
+			</div>
+		</div>
+<!--		<div data-role="footer" >
+		<p style="text-align: center">
+		<table style="width: 100%">
+			<tr>
+				<td><a href="#" data-role="button" id="selectProfile" data-theme="b"  style="width: 100%">Select</a></td>
+				<td><a href="#" data-role="button" id="createProfile" data-theme="b"  style="width: 100%">Create</a></td>
+				<td><a href="#" data-role="button" id="editProfile" data-theme="b"  style="width: 100%">Edit</a></td>
+				<td><a href="#" data-role="button" id="deleteProfile" data-theme="b"  style="width: 100%">Delete</a></td>
+			</tr>
+		</table>
+		</p>
+		</div> -->
+	</div> 
+</body>
+</html>

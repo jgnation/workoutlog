@@ -1,0 +1,48 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:theme="@android:style/Theme.Translucent"
+    >
+
+
+    <!-- HEADER -->
+    <LinearLayout
+        android:id="@+id/top_header" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#333333"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:gravity="center_horizontal" >
+        <TextView 
+		    android:text="Workout Log"
+		    android:textStyle="bold"
+		    android:textSize="20sp"
+		    android:id="@+id/header_title" 
+		    android:layout_height="wrap_content"
+		    android:layout_width="wrap_content"
+		    />
+        <TextView 
+		    android:text="About"
+		    android:textSize="12sp"
+		    android:id="@+id/header_text" 
+		    android:layout_height="wrap_content"
+		    android:layout_width="wrap_content"
+		    />
+    </LinearLayout>
+
+	
+    
+    <!-- CONTENT AREA -->
+    <WebView android:orientation="vertical"
+        android:layout_width="fill_parent" 
+        android:layout_height="fill_parent"
+        android:layout_weight="5"
+        android:layout_below="@id/top_header" 
+        android:id="@+id/mainView"
+        android:paddingBottom="5sp" 
+        android:background="@android:color/transparent">
+    </WebView>
+
+</RelativeLayout>

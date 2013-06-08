@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="TabTextColor">#000000</color>
+    
+    <color name="FartButtonStartColor">#90003388</color>
+    <color name="FartButtonEndColor">#9033EECC</color>
+    <color name="FartButtonDisabledStartColor">#80565051</color>
+    <color name="FartButtonDisabledEndColor">#80736F6E</color>
+    <color name="FartButtonBorderColor">#80254117</color>
+    
+    <color name="FlushButtonStartColor">#90004400</color>
+    <color name="FlushButtonEndColor">#9033FF00</color>
+    <color name="FlushButtonDisabledStartColor">#80565051</color>
+    <color name="FlushButtonDisabledEndColor">#80736F6E</color>
+    <color name="FlushButtonBorderColor">#80254117</color>
+    
+    <color name="SplashButtonStartColor">#90660099</color>
+    <color name="SplashButtonEndColor">#90CC11CC</color>
+    <color name="SplashButtonDisabledStartColor">#80565051</color>
+    <color name="SplashButtonDisabledEndColor">#80736F6E</color>
+    <color name="SplashButtonBorderColor">#80254117</color>
+    
+    <color name="ExitButtonStartColor">#90CC2244</color>
+    <color name="ExitButtonEndColor">#90CC3300</color>
+    <color name="ExitButtonDisabledStartColor">#80565051</color>
+    <color name="ExitButtonDisabledEndColor">#80736F6E</color>
+    <color name="ExitButtonBorderColor">#80254117</color>
+    
+    <color name="PressedButtonStartColor">#90FF7711</color>
+    <color name="PressedButtonEndColor">#90FFEE11</color>
+    <color name="PressedButtonDisabledStartColor">#80565051</color>
+    <color name="PressedButtonDisabledEndColor">#80736F6E</color>
+    <color name="PressedButtonBorderColor">#80254117</color>
+  
+</resources>

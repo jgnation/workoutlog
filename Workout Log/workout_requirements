@@ -1,0 +1,58 @@
+-create a user/profile
+-user can create a routine/program (e.g. p90x, 5x5, etc)
+-each routine can have multiple section/entries, (e.g. Monday, Tuesday, or Back, Legs, or P90X ab blaster)
+-each section/entry can have multiple workouts
+-each workout is unique (e.g. the 'bench press' for one routine is different than the 'bench press' for another routine)
+-should be able to search/browse workouts without having to enter a routine/program
+-workouts being searched should display the name of the associated routine
+-an example routine should come with the program
+-workout screen should have: name of workout, reps, weight, history of rep/weight (5 or so), notes
+
+-themes: http://mkblog.exadel.com/2012/03/really-cool-new-jquery-mobile-themes/
+
+http://mobile.tutsplus.com/tutorials/mobile-web-apps/build-a-contacts-application-with-jquery-mobile-the-android-sdk-part-1/
+http://developer.android.com/guide/webapps/webview.html#BindingJavaScript
+http://logic-explained.blogspot.com/2011/12/using-ormlite-in-android-projects.html
+http://developer.android.com/training/basics/firstapp/running-app.html
+
+Don't forget how to add Jar's!  There was a jqueryMobile theme in the libs folder as well
+Divide stuff into subpackages for better organization
+
+UI:
+splash screen
+main screen - choose profile
+profile screen - choose routine
+routine screen - choose a section/entry
+section/entry screen - choose a workout
+workout screen - to do!
+
+Database:
+tables - user/profile, routine, section/entry, workout
+
+avoid query parameters: http://code.google.com/p/android/issues/detail?id=17535
+
+
+http://stackoverflow.com/questions/6645665/what-is-a-good-tutorial-for-using-ormlite-with-sqlite-and-android
+
+//-------header/footer-------
+http://stackoverflow.com/questions/4732634/how-to-set-the-header-and-footer-for-linear-layout-in-android
+http://stackoverflow.com/questions/10147803/android-webview-layout-to-take-remaining-space
+http://www.pocketmagic.net/?p=1764
+
+//http://stackoverflow.com/questions/4186021/how-to-start-a-new-activity-when-click-on-button
+http://blog.codiqa.com/2012/05/custom-ios-themes/
+http://lexandera.com/2009/01/adding-alert-support-to-a-webview/
+
+
+
+
+
+
+
+Pre-Populate Database:
+======================
+http://stackoverflow.com/questions/9109438/how-to-use-an-existing-database-with-an-android-application/9109728#9109728
+
+
+
+
