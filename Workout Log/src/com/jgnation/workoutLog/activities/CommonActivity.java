@@ -3,7 +3,6 @@ package com.jgnation.workoutLog.activities;
 import java.util.List;
 
 import com.jgnation.workoutLog.CustomWebChromeClient;
-import com.jgnation.workoutLog.Global;
 import com.jgnation.workoutLog.R;
 import com.jgnation.workoutLog.database.DatabaseManager;
 import com.jgnation.workoutLog.entities.Exercise;

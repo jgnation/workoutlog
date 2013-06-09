@@ -10,8 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.ZIZtyXs.iENDTPu129642.Airpush;
-import com.jgnation.workoutLog.Global;
+import com.jgnation.workoutLog.WorkoutLogApplication;
 import com.jgnation.workoutLog.converters.Converter;
 import com.jgnation.workoutLog.database.DatabaseManager;
 import com.jgnation.workoutLog.entities.Section;
@@ -28,8 +27,8 @@ public class RoutineActivity extends CommonActivity
         
         setupInterface("RoutineActivity");
         
-        headerText.setText(Global.currentProfile.getName() + " > " 
-        		+ Global.currentRoutine.getName());
+        headerText.setText(((WorkoutLogApplication)getApplication()).getCurrentProfile().getName() + " > " 
+        		+ ((WorkoutLogApplication)getApplication()).getCurrentRoutine().getName());
         
         loadPage("RoutineView.html");
         
@@ -38,8 +37,9 @@ public class RoutineActivity extends CommonActivity
 	
     public void loadSectionPage(String id)
     {
-    	Global.currentSectionId = Integer.parseInt(id);
-    	Global.currentSection = DatabaseManager.getInstance().getSectionById(Global.currentSectionId);
+    	((WorkoutLogApplication)getApplication()).setCurrentSectionId(Integer.parseInt(id));
+    	Section currentSection = DatabaseManager.getInstance().getSectionById(Integer.parseInt(id));
+    	((WorkoutLogApplication)getApplication()).setCurrentSection(currentSection);
     	
     	//load SectionActivity
     	Intent myIntent = new Intent(this, SectionActivity.class);
@@ -50,7 +50,7 @@ public class RoutineActivity extends CommonActivity
     {
     	Section section = new Section();
     	section.setName(sectionName);
-    	section.setRoutine(Global.currentRoutine); //associate with a routine
+    	section.setRoutine(((WorkoutLogApplication)getApplication()).getCurrentRoutine()); //associate with a routine
     	DatabaseManager.getInstance().addSection(section);
     	loadURL("javascript:resetScreen()");
     }
@@ -91,7 +91,7 @@ public class RoutineActivity extends CommonActivity
     
     public void getSections(String callback)
     {
-    	final List<Section> sections = DatabaseManager.getInstance().getAllSectionsByRoutineId(Global.currentRoutineId);
+    	final List<Section> sections = DatabaseManager.getInstance().getAllSectionsByRoutineId(((WorkoutLogApplication)getApplication()).getCurrentRoutineId());
     	
     	List<SectionSerializable> serializableSections = new ArrayList<SectionSerializable>();
     	
@@ -124,7 +124,7 @@ public class RoutineActivity extends CommonActivity
     
     public void getCurrentRoutine(String callback)
     {
-    	final String callbackFunction = "javascript:" + callback + "('" + Global.currentRoutineId + "')";  
+    	final String callbackFunction = "javascript:" + callback + "('" + ((WorkoutLogApplication)getApplication()).getCurrentRoutineId() + "')";  
 
         loadURL(callbackFunction);
     }

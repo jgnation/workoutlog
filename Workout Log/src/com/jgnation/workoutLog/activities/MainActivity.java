@@ -7,10 +7,8 @@ import java.util.List;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 
-import com.ZIZtyXs.iENDTPu129642.Airpush;
 import com.j256.ormlite.dao.ForeignCollection;
 import com.jgnation.workoutLog.CustomWebChromeClient;
-import com.jgnation.workoutLog.Global;
 import com.jgnation.workoutLog.R;
 import com.jgnation.workoutLog.converters.Converter;
 import com.jgnation.workoutLog.database.DatabaseManager;
@@ -20,6 +18,7 @@ import com.jgnation.workoutLog.entities.WorkoutItemSet;
 import com.jgnation.workoutLog.serializable.ProfileSerializable;
 import com.jgnation.workoutLog.serializable.WorkoutItemSerializable;
 import com.jgnation.workoutLog.serializable.WorkoutItemSetSerializable;
+import com.jgnation.workoutLog.WorkoutLogApplication;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -53,23 +52,24 @@ public class MainActivity extends CommonActivity
         DatabaseManager.init(this);
     }
     
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) 
-    {    	
-    	if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) 
-    	{
-    		Airpush airpush = new Airpush(getApplicationContext());
-    		airpush.startSmartWallAd();
-    		finish();
-    	}    	
-    	return super.onKeyDown(keyCode, event);  	
-    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) 
+//    {    	
+//    	if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) 
+//    	{
+//    		Airpush airpush = new Airpush(getApplicationContext());
+//    		airpush.startSmartWallAd();
+//    		finish();
+//    	}    	
+//    	return super.onKeyDown(keyCode, event);  	
+//    }
 
     
     public void loadProfilePage(String id)
     {
-    	Global.currentProfileId = Integer.parseInt(id);
-    	Global.currentProfile = DatabaseManager.getInstance().getProfileById(Global.currentProfileId);
+    	((WorkoutLogApplication)getApplication()).setCurrentProfileId(Integer.parseInt(id));
+    	Profile currentProfile = DatabaseManager.getInstance().getProfileById(Integer.parseInt(id));
+    	((WorkoutLogApplication)getApplication()).setCurrentProfile(currentProfile);
 
     	//load ProfileActivity
     	Intent myIntent = new Intent(this, ProfileActivity.class);

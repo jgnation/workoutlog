@@ -10,7 +10,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.jgnation.workoutLog.Global;
+import com.jgnation.workoutLog.WorkoutLogApplication;
 import com.jgnation.workoutLog.converters.Converter;
 import com.jgnation.workoutLog.database.DatabaseManager;
 import com.jgnation.workoutLog.entities.Exercise;
@@ -27,9 +27,9 @@ public class SectionActivity extends CommonActivity
         
         setupInterface("SectionActivity");
         
-        headerText.setText(Global.currentProfile.getName() + " > " 
-        		+ Global.currentRoutine.getName() + " > "
-        		+ Global.currentSection.getName());
+        headerText.setText(((WorkoutLogApplication)getApplication()).getCurrentProfile().getName() + " > " 
+        		+ ((WorkoutLogApplication)getApplication()).getCurrentRoutine().getName() + " > "
+        		+ ((WorkoutLogApplication)getApplication()).getCurrentSection().getName());
         
         loadPage("SectionView.html");
         
@@ -38,8 +38,9 @@ public class SectionActivity extends CommonActivity
 	
     public void loadExercisePage(String id)
     {
-    	Global.currentExerciseId = Integer.parseInt(id);
-    	Global.currentExercise = DatabaseManager.getInstance().getExerciseById(Global.currentExerciseId);
+    	((WorkoutLogApplication)getApplication()).setCurrentExerciseId(Integer.parseInt(id));
+    	Exercise currentExercise = DatabaseManager.getInstance().getExerciseById(Integer.parseInt(id));
+    	((WorkoutLogApplication)getApplication()).setCurrentExercise(currentExercise);
     	
     	//load SectionActivity
     	Intent myIntent = new Intent(this, ExerciseActivity.class);
@@ -50,7 +51,7 @@ public class SectionActivity extends CommonActivity
     {
     	Exercise exercise = new Exercise();
     	exercise.setName(exerciseName);
-    	exercise.setSection(Global.currentSection); //associate with a routine
+    	exercise.setSection(((WorkoutLogApplication)getApplication()).getCurrentSection()); //associate with a routine
     	DatabaseManager.getInstance().addExercise(exercise);
     	loadURL("javascript:resetScreen()");
     }
@@ -90,7 +91,7 @@ public class SectionActivity extends CommonActivity
     
     public void getExercises(String callback)
     {
-    	final List<Exercise> exercises = DatabaseManager.getInstance().getAllExercisesBySectionId(Global.currentSectionId);
+    	final List<Exercise> exercises = DatabaseManager.getInstance().getAllExercisesBySectionId(((WorkoutLogApplication)getApplication()).getCurrentSectionId());
     	
     	List<ExerciseSerializable> serializableExercises = new ArrayList<ExerciseSerializable>();
     	
@@ -123,7 +124,7 @@ public class SectionActivity extends CommonActivity
     
     public void getCurrentSection(String callback)
     {
-    	final String callbackFunction = "javascript:" + callback + "('" + Global.currentSectionId + "')";  
+    	final String callbackFunction = "javascript:" + callback + "('" + ((WorkoutLogApplication)getApplication()).getCurrentSectionId() + "')";  
 
         loadURL(callbackFunction);
     }

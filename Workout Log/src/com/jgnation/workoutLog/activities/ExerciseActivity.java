@@ -13,10 +13,9 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.text.format.Time;
 
 import com.j256.ormlite.dao.ForeignCollection;
-import com.jgnation.workoutLog.Global;
+import com.jgnation.workoutLog.WorkoutLogApplication;
 import com.jgnation.workoutLog.converters.Converter;
 import com.jgnation.workoutLog.database.DatabaseManager;
 import com.jgnation.workoutLog.entities.WorkoutItem;
@@ -35,10 +34,10 @@ public class ExerciseActivity extends CommonActivity
         
         setupInterface2("ExerciseActivity");
         
-        headerText.setText(Global.currentProfile.getName() + " > " 
-        		+ Global.currentRoutine.getName() + " > "
-        		+ Global.currentSection.getName() + " > "
-        		+ Global.currentExercise.getName());
+        headerText.setText(((WorkoutLogApplication)getApplication()).getCurrentProfile().getName() + " > " 
+        		+ ((WorkoutLogApplication)getApplication()).getCurrentRoutine().getName() + " > "
+        		+ ((WorkoutLogApplication)getApplication()).getCurrentSection().getName() + " > "
+        		+ ((WorkoutLogApplication)getApplication()).getCurrentExercise().getName());
         
         loadPage("ExerciseView.html");
         
@@ -66,7 +65,7 @@ public class ExerciseActivity extends CommonActivity
 				try
 				{
 					WorkoutItemSerializable item = getObject(stringifiedWorkoutItem);
-					WorkoutItem workoutItem = Converter.serializableToEntity(item, Global.currentExercise); 
+					WorkoutItem workoutItem = Converter.serializableToEntity(item, ((WorkoutLogApplication)getApplication()).getCurrentExercise()); 
 					
 					List<WorkoutItemSet> workoutItemSets = new ArrayList<WorkoutItemSet>();
 					List<WorkoutItemSetSerializable> serializableSets = item.getWorkoutItemSets();
@@ -150,7 +149,7 @@ public class ExerciseActivity extends CommonActivity
 	public List<WorkoutItem> getWorkoutItems()
 	{
 		//this should be a list of one item
-		return DatabaseManager.getInstance().getAllWorkoutItemsByExerciseId(Global.currentExerciseId);
+		return DatabaseManager.getInstance().getAllWorkoutItemsByExerciseId(((WorkoutLogApplication)getApplication()).getCurrentExerciseId());
 	}
 	
 	//pretty sure this can be deleted?

@@ -6,14 +6,13 @@ import java.util.List;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import com.ZIZtyXs.iENDTPu129642.Airpush;
-import com.jgnation.workoutLog.Global;
 import com.jgnation.workoutLog.R;
 import com.jgnation.workoutLog.converters.Converter;
 import com.jgnation.workoutLog.database.DatabaseManager;
 import com.jgnation.workoutLog.entities.Profile;
 import com.jgnation.workoutLog.entities.Routine;
 import com.jgnation.workoutLog.serializable.RoutineSerializable;
+import com.jgnation.workoutLog.WorkoutLogApplication;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -31,15 +30,12 @@ public class ProfileActivity extends CommonActivity
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) 
-    {
-        Airpush airpush = new Airpush(this);
-		airpush.startSmartWallAd();
-		
+    {		
         super.onCreate(savedInstanceState);
 
         setupInterface("ProfileActivity");
         
-        headerText.setText(Global.currentProfile.getName());        
+        headerText.setText(((WorkoutLogApplication)getApplication()).getCurrentProfile().getName());        
         
         loadPage("ProfileView.html");
         
@@ -48,8 +44,9 @@ public class ProfileActivity extends CommonActivity
     
     public void loadRoutinePage(String id)
     {
-    	Global.currentRoutineId = Integer.parseInt(id);
-    	Global.currentRoutine = DatabaseManager.getInstance().getRoutineById(Global.currentRoutineId);
+    	((WorkoutLogApplication)getApplication()).setCurrentRoutineId(Integer.parseInt(id));
+    	Routine currentRoutine = DatabaseManager.getInstance().getRoutineById(Integer.parseInt(id));
+    	((WorkoutLogApplication)getApplication()).setCurrentRoutine(currentRoutine);
     	
     	//load RoutineActivity
     	Intent myIntent = new Intent(this, RoutineActivity.class);
@@ -60,7 +57,7 @@ public class ProfileActivity extends CommonActivity
     {
     	Routine routine = new Routine();
     	routine.setName(routineName);
-    	routine.setProfile(Global.currentProfile); //associate with a profile
+    	routine.setProfile(((WorkoutLogApplication)getApplication()).getCurrentProfile()); //associate with a profile
     	DatabaseManager.getInstance().addRoutine(routine);
     	loadURL("javascript:resetScreen()");
     }
@@ -100,7 +97,7 @@ public class ProfileActivity extends CommonActivity
     
     public void getRoutines(String callback)
     {
-    	final List<Routine> routines = DatabaseManager.getInstance().getAllRoutinesByProfileId(Global.currentProfileId);
+    	final List<Routine> routines = DatabaseManager.getInstance().getAllRoutinesByProfileId(((WorkoutLogApplication)getApplication()).getCurrentProfileId());
     	
     	List<RoutineSerializable> serializableRoutines = new ArrayList<RoutineSerializable>();
     	
@@ -133,7 +130,7 @@ public class ProfileActivity extends CommonActivity
     
     public void getCurrentProfile(String callback)
     {
-    	final String callbackFunction = "javascript:" + callback + "('" + Global.currentProfileId + "')";  
+    	final String callbackFunction = "javascript:" + callback + "('" + ((WorkoutLogApplication)getApplication()).getCurrentProfileId() + "')";  
 
         loadURL(callbackFunction);
     }
