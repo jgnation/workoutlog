@@ -1,5 +1,6 @@
 package com.jgnation.workoutLog;
 
+import com.jgnation.workoutLog.database.DatabaseManager;
 import com.jgnation.workoutLog.entities.Exercise;
 import com.jgnation.workoutLog.entities.Profile;
 import com.jgnation.workoutLog.entities.Routine;
@@ -9,6 +10,8 @@ import android.app.Application;
 
 public class WorkoutLogApplication extends Application
 {
+	private GlobalPreferences globalPreferences;
+	
 	public int currentProfileId;
 	public Profile currentProfile;
 	public int currentRoutineId;
@@ -21,14 +24,32 @@ public class WorkoutLogApplication extends Application
 	@Override
 	public void onCreate()
 	{
-		currentProfileId = 0;
-		currentProfile = new Profile();
-		currentRoutineId = 0;
-		currentRoutine = new Routine();
-		currentSectionId = 0;
-		currentSection = new Section();
-		currentExerciseId = 0;
-		currentExercise = new Exercise();		
+		globalPreferences = new GlobalPreferences(getApplicationContext());
+		DatabaseManager.init(getApplicationContext());
+		
+		currentProfileId = globalPreferences.getProfileId();
+		if (currentProfileId != 0)
+			currentProfile = DatabaseManager.getInstance().getProfileById(currentProfileId);
+		else
+			currentProfile = new Profile();
+		
+		currentRoutineId = globalPreferences.getRoutineId();
+		if (currentRoutineId != 0)
+			currentRoutine = DatabaseManager.getInstance().getRoutineById(currentRoutineId);
+		else
+			currentRoutine = new Routine();
+		
+		currentSectionId = globalPreferences.getSectionId();
+		if (currentSectionId != 0)
+			currentSection = DatabaseManager.getInstance().getSectionById(currentSectionId);
+		else
+			currentSection = new Section();
+		
+		currentExerciseId = globalPreferences.getExerciseId();
+		if (currentExerciseId != 0)
+			currentExercise = DatabaseManager.getInstance().getExerciseById(currentExerciseId);		
+		else
+			currentExercise = new Exercise();
 	}
 	
 	public int getCurrentProfileId() {
@@ -37,6 +58,7 @@ public class WorkoutLogApplication extends Application
 
 	public void setCurrentProfileId(int currentProfileId) {
 		this.currentProfileId = currentProfileId;
+		globalPreferences.setProfileId(currentProfileId);
 	}
 
 	public Profile getCurrentProfile() {
@@ -53,6 +75,7 @@ public class WorkoutLogApplication extends Application
 
 	public void setCurrentRoutineId(int currentRoutineId) {
 		this.currentRoutineId = currentRoutineId;
+		globalPreferences.setRoutineId(currentRoutineId);
 	}
 
 	public Routine getCurrentRoutine() {
@@ -69,6 +92,7 @@ public class WorkoutLogApplication extends Application
 
 	public void setCurrentSectionId(int currentSectionId) {
 		this.currentSectionId = currentSectionId;
+		globalPreferences.setSectionId(currentSectionId);
 	}
 
 	public Section getCurrentSection() {
@@ -85,6 +109,7 @@ public class WorkoutLogApplication extends Application
 
 	public void setCurrentExerciseId(int currentExerciseId) {
 		this.currentExerciseId = currentExerciseId;
+		globalPreferences.setExerciseId(currentExerciseId);
 	}
 
 	public Exercise getCurrentExercise() {
