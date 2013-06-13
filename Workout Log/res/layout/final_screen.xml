@@ -15,12 +15,12 @@
         android:layout_alignParentTop="true"
         android:orientation="vertical"
         android:gravity="center_horizontal" >
-        <WebView android:orientation="vertical"
+       <!--  <WebView android:orientation="vertical"
 	        android:layout_width="fill_parent" 
 	        android:layout_height="50dip"
 	        android:layout_weight="5"
 	        android:id="@+id/bannerView" 
-	        android:background="@android:color/transparent"/>
+	        android:background="@android:color/transparent"/> -->
         <TextView 
 		    android:text="Workout Log" 
 		    android:textStyle="bold"

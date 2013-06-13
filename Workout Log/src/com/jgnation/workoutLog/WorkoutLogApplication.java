@@ -1,5 +1,6 @@
 package com.jgnation.workoutLog;
 
+
 import com.jgnation.workoutLog.database.DatabaseManager;
 import com.jgnation.workoutLog.entities.Exercise;
 import com.jgnation.workoutLog.entities.Profile;
@@ -7,9 +8,12 @@ import com.jgnation.workoutLog.entities.Routine;
 import com.jgnation.workoutLog.entities.Section;
 
 import android.app.Application;
+import android.app.ProgressDialog;
 
 public class WorkoutLogApplication extends Application
 {
+	ProgressDialog progress;
+	
 	private GlobalPreferences globalPreferences;
 	
 	public int currentProfileId;

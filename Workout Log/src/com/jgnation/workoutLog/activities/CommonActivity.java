@@ -148,7 +148,7 @@ public class CommonActivity extends Activity
         
         selectButton.setBackgroundResource(R.drawable.tab_active);
         
-        //setup banner
+       /* //setup banner
     	final WebView bannerView = (WebView) findViewById(R.id.bannerView);
     	bannerView.getSettings().setJavaScriptEnabled(true);  
     	bannerView.setWebViewClient(new WebViewClient());
@@ -159,7 +159,7 @@ public class CommonActivity extends Activity
             public void run() {
             	bannerView.loadUrl(bannerUrl);
             }
-        });
+        });*/
     }
     
     protected void setupInterface2(String activityName)
@@ -229,7 +229,7 @@ public class CommonActivity extends Activity
         
         createButton.setBackgroundResource(R.drawable.tab_active);
         
-        //setup banner
+       /* //setup banner
     	final WebView bannerView = (WebView) findViewById(R.id.bannerView);
     	bannerView.getSettings().setJavaScriptEnabled(true);  
     	bannerView.setWebViewClient(new WebViewClient());
@@ -240,7 +240,7 @@ public class CommonActivity extends Activity
             public void run() {
             	bannerView.loadUrl(bannerUrl);
             }
-        });
+        });*/
     }
     
     //this is called from javascript

@@ -12,7 +12,7 @@
 
 -when deleting history items, if the most recent history item is deleted, going back to the 'create'
 screen still shows it.  So, if deleting the most recent item, reload the whole page
-
+-when loading the app for the first time, the page takes a while to load.  Display a 'loading' dialog.
 -if there are errors when retrieving from database (e.g., retrieving a Profile), take care of it gracefully
 (e.g., create a new bogus Profile!  Don't catch the exception in the DatabaseManager!)
 -sanitize inputs!

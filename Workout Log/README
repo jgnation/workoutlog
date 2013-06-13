@@ -1,0 +1,12 @@
+Workout Log Basic
+
+This is an android app that provides the user with a way to record workout/exercise information.
+The user can create profiles, routines, sections (days of week, chest day, leg day, etc.) and exercises.
+Workout Log Basic utilizes the ORMLite library to persist data in a SQLite database.  The interface
+is written in HTML and Javascript (jQuery) and is displayed in a WebView.  The native java code
+communicates with the WebView via a Javascript interface and sends/receives JSON.  The app used to
+display banner ads via Leadbolt and various other ads using Airpush, but most of that code has been
+commented out for now.  
+
+The app is in a fully functional state.  There are a number of enhancements that I would like to make
+(check out the TO_DO file), and LOTS of code cleanup to do.
